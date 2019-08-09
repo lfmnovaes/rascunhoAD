@@ -10,7 +10,7 @@ import numpy as np
 LAMBDAS = [0.2, 0.4, 0.6, 0.8, 0.9]
 #LAMBDAS = [0.2, 0.4, 0.6]
 JOB_SIZE = 10
-TOTAL_SIMULATION_TIME = 10000
+TOTAL_SIMULATION_TIME = 32000
 DEBUG = False  # True for detailed logs
 CSV = True
 
@@ -167,13 +167,13 @@ def plot_simulation_delay_time_per_job(jobs, arrival_rate, sumarize):
     sumarize[arrival_rate] = [simulation_delay_avg, 1 / ((1 / JOB_SIZE) - arrival_rate)]
     #plt.savefig('plt_' + str(arrival_rate) + '.png')
 
-def plot_grafico(lista, disciplina, saida='plot', x_legenda='x', y_legenda='y'):
+def plot_grafico(lista, disciplina, saida='0', x_legenda='x', y_legenda='y'):
     fig = plt.figure()
     y = np.arange(len(lista))
     plt.plot(y, lista, linewidth=0.5, c='k', label='lista')
     plt.title(disciplina.upper())
     plt.grid()
-    fig.savefig(saida + str(this_lambda) + '.png')
+    fig.savefig('plot' + saida + str(this_lambda) + '.png')
     plt.close()
 
 if __name__ == '__main__':
@@ -206,13 +206,13 @@ if __name__ == '__main__':
                 job_data.append(the_jobs[job].queue_time)
                 writer.writerow(job_data)
 
-                lista1.append(the_jobs[job].arrival_time/the_jobs[job].job_id)
+                lista1.append(the_jobs[job].job_delay_time/the_jobs[job].job_id)
                 lista2.append(the_jobs[job].service_time/the_jobs[job].job_id)
                 lista3.append(the_jobs[job].queue_time/the_jobs[job].job_id)
                 
-            plot_grafico(lista1, 'FCFS', 'plot1')
-            plot_grafico(lista3, 'FCFS', 'plot3')
-            plot_grafico(lista2, 'FCFS', 'plot2')
+            plot_grafico(lista1, 'FCFS', 'ENq') #Tamanho médio da fila de espera, corrigir
+            plot_grafico(lista2, 'FCFS', 'EX')
+            plot_grafico(lista3, 'FCFS', 'EW')
             outfile.close()
     
     lamdas = [lamda for lamda in summary_results]
